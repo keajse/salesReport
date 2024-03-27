@@ -1,0 +1,5 @@
+P10;tablet;900
+P11;celular;650
+P12;laptop;1050
+P13;Iphone;1500;
+P14;Audifonos;300
