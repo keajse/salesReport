@@ -1,21 +1,16 @@
 package Main;
 
-import java.util.Comparator;
-
 public class Product {
     private String id;
     private String name;
     private long unitPrice;
     private long totalQuantitySold;
-    private long totalSales;
 
     public Product(String id, String name, long unitPrice) {
         this.id = id;
         this.name = name;
         this.unitPrice = unitPrice;
         this.totalQuantitySold = 0; // Inicialmente, la cantidad total vendida es cero
-        this.totalSales = 0;
-        
     }
 
     // Getters and Setters
@@ -48,23 +43,8 @@ public class Product {
     }
 
     // Método para registrar una venta del producto
-    /*public void registerSale(int quantity) {
-        totalQuantitySold += quantity;
-    }*/
-    
-    public long getTotalSales() {
-        return totalSales;
-    }
-
-    public void setTotalSales(long totalSales) {
-        this.totalSales = totalSales;
-    }
-
-    // Método para registrar una venta del producto
     public void registerSale(int quantity) {
         totalQuantitySold += quantity;
-        totalSales += quantity * unitPrice; // Actualizar el total de ventas
     }
-    
 }
 
