@@ -1,0 +1,11 @@
+TipoDocumento,NúmeroDocumento,NombreVendedor,Producto,NombreProducto,PrecioUnitario,Cantidad,ValorTotal
+CC,1039,Omar,12,laptop,1050,10,10500
+CC,1039,Omar,14,Audifonos,300,3,900
+CC,1037,Adriana,11,celular,650,2,1300
+CC,1037,Adriana,13,Iphone,1500,2,3000
+CC,1037,Adriana,10,tablet,900,40,36000
+CC,1035,Francisco,11,celular,650,2,1300
+CC,1035,Francisco,14,Audifonos,300,10,3000
+CC,1035,Francisco,10,tablet,900,5,4500
+CC,1045,Pablo,14,Audifonos,300,100,30000
+CC,1045,Pablo,10,tablet,900,50,45000
