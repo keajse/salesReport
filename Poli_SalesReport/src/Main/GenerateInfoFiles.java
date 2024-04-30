@@ -4,36 +4,56 @@ import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * The GenerateInfoFiles class processes sales data files and generates various reports based on the data.
+ */
+
 public class GenerateInfoFiles {
+	
+	/**
+     * Main method that initiates the generation of reports.
+     *
+     * @param args Command-line arguments (not used).
+     */
 
     public static void main(String[] args) {
-    	// Especifica la carpeta que contiene los archivos de ventas por vendedor
+    	// Specifies the folder containing the sales files per salesman
         String folderPath = "reports";
 
-        // Obtener lista de archivos .txt en la carpeta
+        // Get a list of .txt files in the folder
         File folder = new File(folderPath);
         File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
 
         if (files != null) {
-            // Estructuras de datos para almacenar los productos, las ventas y los vendedores
+        	// Data structures to store products, sales, and salesmen
             Map<String, Map<String, Integer>> salesData = new HashMap<>();
             Map<String, Product> products = readProductsFromFile("productos.txt");
             Map<String, String> salesmenNames = readSalesmenFromFile("vendedores.txt");
 
-            // Procesar cada archivo de ventas por vendedor
+            // Process each sales file per salesman
             for (File file : files) {
                 processSalesData(file, salesData, products);
             }
 
-            // Generar el informe unificado en formato CSV
+            // Generate the unified report in CSV format
             generateUnifiedReport(salesData, products, salesmenNames);
+            // Generate the total sales report
             generateTotalSalesReport(salesData, salesmenNames, products); 
+            // Generate the product sales report
             generateProductSalesReport(salesData, products);
         } else {
             System.err.println("No se encontraron archivos en la carpeta especificada.");
         }
     }
 
+    /**
+     * Processes the sales data from a file and updates the salesData map.
+     *
+     * @param file       The file containing sales data.
+     * @param salesData  The map to store sales data.
+     * @param products   The map containing product information.
+     */
+    
     
     private static void processSalesData(File file, Map<String, Map<String, Integer>> salesData, Map<String, Product> products) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -65,6 +85,12 @@ public class GenerateInfoFiles {
         }
     }
 
+    /**
+     * Reads product information from a file and returns a map of products.
+     *
+     * @param fileName The name of the file containing product information.
+     * @return A map containing product information.
+     */
 
     private static Map<String, Product> readProductsFromFile(String fileName) {
         Map<String, Product> products = new HashMap<>();
@@ -84,6 +110,12 @@ public class GenerateInfoFiles {
         return products;
     }
 
+    /**
+     * Reads salesman information from a file and returns a map of salesmen.
+     *
+     * @param fileName The name of the file containing salesman information.
+     * @return A map containing salesman information.
+     */
     private static Map<String, String> readSalesmenFromFile(String fileName) {
         Map<String, String> salesmenNames = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -102,6 +134,13 @@ public class GenerateInfoFiles {
         return salesmenNames;
     }
 
+    /**
+     * Generates a unified report in CSV format based on sales data, product information, and salesman names.
+     *
+     * @param salesData     The sales data map.
+     * @param products      The map containing product information.
+     * @param salesmenNames The map containing salesman names.
+     */
     private static void generateUnifiedReport(Map<String, Map<String, Integer>> salesData, Map<String, Product> products, Map<String, String> salesmenNames) {
     	String folderPath = "generatedReports";
         new File(folderPath).mkdirs();
@@ -144,6 +183,13 @@ public class GenerateInfoFiles {
         }
     }
 
+    /**
+     * Generates a total sales report in CSV format based on sales data and salesman names.
+     *
+     * @param salesData     The sales data map.
+     * @param salesmenNames The map containing salesman names.
+     * @param products      The map containing product information.
+     */
     
     private static void generateTotalSalesReport(Map<String, Map<String, Integer>> salesData, Map<String, String> salesmenNames, Map<String, Product> products) {
         String folderPath = "generatedReports";
@@ -169,6 +215,15 @@ public class GenerateInfoFiles {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Calculates total sales for each salesman and returns a list of Salesman objects.
+     *
+     * @param salesData     The sales data map.
+     * @param salesmenNames The map containing salesman names.
+     * @param products      The map containing product information.
+     * @return A list of Salesman objects with total sales.
+     */
 
     private static List<Salesman> calculateTotalSalesForSalesmen(Map<String, Map<String, Integer>> salesData, Map<String, String> salesmenNames, Map<String, Product> products) {
         List<Salesman> salesmen = new ArrayList<>();
@@ -202,6 +257,12 @@ public class GenerateInfoFiles {
         return salesmen;
     }
     
+    /**
+     * Generates a product sales report in CSV format based on sales data and product information.
+     *
+     * @param salesData The sales data map.
+     * @param products  The map containing product information.
+     */
     private static void generateProductSalesReport(Map<String, Map<String, Integer>> salesData, Map<String, Product> products) {
         String folderPath = "generatedReports";
         new File(folderPath).mkdirs();
@@ -255,9 +316,5 @@ public class GenerateInfoFiles {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 }
