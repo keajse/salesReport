@@ -34,32 +34,37 @@ public class GenerateInfoFiles {
         }
     }
 
+    
     private static void processSalesData(File file, Map<String, Map<String, Integer>> salesData, Map<String, Product> products) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            // Obtener el tipo y número de documento del vendedor a partir del nombre del archivo
-            String fileName = file.getName();
-            String[] fileNameParts = fileName.split("\\.");
-            String[] salesmanParts = fileNameParts[0].split("_");
-            String tipoDocumento = salesmanParts[0];
-            String numeroDocumento = salesmanParts[1];
+            // Leer la primera línea para obtener el tipo y número de documento del vendedor
+            String firstLine = reader.readLine();
+            if (firstLine != null) {
+                String[] firstLineParts = firstLine.split(";");
+                String tipoDocumento = firstLineParts[0];
+                String numeroDocumento = firstLineParts[1];
 
-            // Inicializar las ventas del vendedor en el mapa si es necesario
-            String salesmanKey = tipoDocumento + "_" + numeroDocumento;
-            salesData.putIfAbsent(salesmanKey, new HashMap<>());
+                // Inicializar las ventas del vendedor en el mapa si es necesario
+                String salesmanKey = tipoDocumento + "_" + numeroDocumento;
+                salesData.putIfAbsent(salesmanKey, new HashMap<>());
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                // Leer los productos vendidos y sus cantidades
-                String productId = parts[0];
-                int quantitySold = Integer.parseInt(parts[1]);
-                salesData.get(salesmanKey).put(productId, salesData.get(salesmanKey).getOrDefault(productId, 0) + quantitySold);
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(";");
+                    // Leer los productos vendidos y sus cantidades
+                    String productId = parts[0];
+                    int quantitySold = Integer.parseInt(parts[1]);
+                    salesData.get(salesmanKey).put(productId, salesData.get(salesmanKey).getOrDefault(productId, 0) + quantitySold);
+                }
+            } else {
+            	System.err.println("El archivo '" + file.getName() + "' está vacío o no contiene la primera línea requerida.");
             }
         } catch (IOException e) {
             System.err.println("Error al procesar el archivo: " + file.getName() + ", tipo de error: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     private static Map<String, Product> readProductsFromFile(String fileName) {
         Map<String, Product> products = new HashMap<>();
@@ -119,12 +124,17 @@ public class GenerateInfoFiles {
 
                     // Obtener el nombre y el precio unitario del producto
                     Product product = products.get(productId);
-                    String productName = product.getName();
-                    long unitPrice = product.getUnitPrice();
-
-                    // Calcular el valor total de las ventas del producto
-                    long totalValue = unitPrice * quantitySold;
-                    writer.printf("%s,%s,%s,%s,%s,%d,%d,%d%n", tipoDocumento, numeroDocumento, salesmanName, productId, productName, unitPrice, quantitySold, totalValue);
+                    if (product != null) {
+                    
+	                    String productName = product.getName();
+	                    long unitPrice = product.getUnitPrice();
+	
+	                    // Calcular el valor total de las ventas del producto
+	                    long totalValue = unitPrice * quantitySold;
+	                    writer.printf("%s,%s,%s,%s,%s,%d,%d,%d%n", tipoDocumento, numeroDocumento, salesmanName, productId, productName, unitPrice, quantitySold, totalValue);
+                    }else {
+                    	System.err.println("El producto con ID '" + productId + "' no existe en la base de datos.");
+                    }
                 }
             }
             System.out.println("Informe unificado generado correctamente: " + fileName);
@@ -133,7 +143,7 @@ public class GenerateInfoFiles {
             e.printStackTrace();
         }
     }
-    
+
     
     private static void generateTotalSalesReport(Map<String, Map<String, Integer>> salesData, Map<String, String> salesmenNames, Map<String, Product> products) {
         String folderPath = "generatedReports";
@@ -172,7 +182,16 @@ public class GenerateInfoFiles {
 
             // Calcular el valor total de las ventas del vendedor
             long totalSales = entry.getValue().entrySet().stream()
-                    .mapToLong(saleEntry -> saleEntry.getValue() * products.get(saleEntry.getKey()).getUnitPrice())
+                    //.mapToLong(saleEntry -> saleEntry.getValue() * products.get(saleEntry.getKey()).getUnitPrice())            		
+            		.mapToLong(saleEntry -> {
+            		    Product product = products.get(saleEntry.getKey());
+            		    if (product != null) {
+            		        return saleEntry.getValue() * product.getUnitPrice();
+            		    } else {
+            		        System.err.println("El producto con ID '" + saleEntry.getKey() + "' no existe en la base de datos.");
+            		        return 0; // O un valor predeterminado
+            		    }
+            		})
                     .sum();
             
             // Crear un objeto Salesman con los datos del vendedor y su total de ventas
@@ -199,9 +218,16 @@ public class GenerateInfoFiles {
                 for (Map.Entry<String, Integer> entry : vendedorSales.entrySet()) {
                     String productId = entry.getKey();
                     int quantitySold = entry.getValue();
-                    long unitPrice = products.get(productId).getUnitPrice();
-                    long totalSales = unitPrice * quantitySold;
-                    totalSalesByProduct.put(productId, totalSalesByProduct.getOrDefault(productId, 0L) + totalSales);
+
+                    // Verificar si el producto existe en la base de datos
+                    Product product = products.get(productId);
+                    if (product != null) {
+                        long unitPrice = product.getUnitPrice();
+                        long totalSales = unitPrice * quantitySold;
+                        totalSalesByProduct.put(productId, totalSalesByProduct.getOrDefault(productId, 0L) + totalSales);
+                    } else {
+                        System.err.println("El producto con ID '" + productId + "' no existe en la base de datos.");
+                    }
                 }
             }
 

@@ -1,6 +1,7 @@
 Producto,ValorUnitario,CantidadTotalVendida,ValorTotal
-tablet,900,95,85500
-Audifonos,300,113,33900
+tablet,900,165,148500
+Audifonos,300,115,34500
 laptop,1050,10,10500
-Iphone,1500,2,3000
+Iphone,1500,7,10500
 celular,650,4,2600
+Mouse,80,1,80
