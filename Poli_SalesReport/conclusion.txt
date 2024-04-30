@@ -1,0 +1,15 @@
+Paz y bien profesor, en primera instacia reciba un cordial saludo y un profundo agradecimiento por los conocimientos adquiridos.
+
+1. Lo aprendido durante el desarrollo del proyecto
+
+Durante el desarrollo de este proyecto, aprendí la importancia de la gestión de archivos y datos en la programación, así como la integración efectiva de diferentes componentes de un sistema. Adquirí experiencia en el manejo de excepciones y errores, así como en la implementación de lógica de negocio para procesar datos y generar informes. Además, fortalecí mis habilidades de resolución de problemas al enfrentar desafíos técnicos durante el desarrollo del proyecto.
+
+
+2. Posibles aplicaciones de las destrezas y conocimientos adquiridos y practicados durante el desarrollo del proyecto.
+
+Las destrezas y conocimientos adquiridos y practicados durante el desarrollo de este proyecto tienen numerosas aplicaciones en mi vida profesional como estudiante de ingeniería de software. Por ejemplo, la capacidad para leer, procesar y generar informes a partir de archivos de datos es fundamental en el desarrollo de sistemas de gestión de información y análisis de datos. Además, la habilidad para trabajar con estructuras de datos como mapas y listas es esencial en el diseño y desarrollo de aplicaciones y sistemas de software.
+
+
+3. Las dificultades presentadas durante el proceso.
+
+Durante el desarrollo del proyecto, me enfrenté a diversas dificultades que me desafiaron a buscar soluciones creativas y efectivas. Algunas de estas dificultades incluyeron el manejo de excepciones y errores inesperados, la gestión de archivos y datos corruptos o mal formateados, y la integración de diferentes componentes del sistema de manera coherente y eficiente. Incluso el poder desarrollar la estructura conforme a los requisitos planteados, porque inicialmente me salió algo un poco diferente, ya que seleccionaba la carpeta que tenía la información, después no era capaz de leer la primera fila sino que tomaba los datos del vendedor por el titulo pero así no podía tener varios archivos del mismo vendedor, hasta que al final lo logré. ESto muestra que cada dificultad representa una oportunidad para aprender y mejorar mis habilidades técnicas y de resolución de problemas.
